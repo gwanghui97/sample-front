@@ -9,29 +9,19 @@ import { ClipLoader } from 'react-spinners';
 import { Container, Title, Meta, Content, BackButton, Image, LikeButton, CommentSection, CommentInput, CommentSubmitButton } from './BoardStyles';
 
 const BoardDetailPage = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [liked, setLiked] = useState(false);
   const [commentContent, setCommentContent] = useState('');
   const { boardType, boardId } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
-  console.log("Board ID:", boardId);
-  console.log("Board Type:", boardType);
   
   const fetchPost = async () => {
     if (!boardId) {
       throw new Error('Invalid post ID');
     }
-    try {
-      console.log(`Fetching post with ID: ${boardId}`);
-      const response = await axios.get(`http://localhost:8080/boards/${boardId}`);
-      console.log("API Response:", response.data);
-      return response.data.data;
-    } catch (error) {
-      console.error("Error fetching post:", error.response || error);
-      throw error;
-    }
+    const response = await axios.get(`http://localhost:8080/boards/${boardId}`);
+    return response.data.data;
   };
 
   const { data: post, isLoading, isError, error } = useQuery({
